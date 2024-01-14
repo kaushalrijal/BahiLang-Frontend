@@ -1,0 +1,105 @@
+      body {
+        background-color: black;
+        color: white;
+        font-family: sans-serif;
+        min-width: 90%;
+      }
+
+      .header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .body {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: 100%;
+      }
+
+      .editor {
+        width: 100%;
+        min-height: screen;
+        height: 80%;
+      }
+
+      .button-batta {
+        margin: 8px 0 8px 0;
+        display: flex;
+        gap: 12px;
+      }
+
+      .button {
+        padding: 8px;
+        width: 100%;
+        background: #424242;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .button:hover {
+        background-color: gray;
+      }
+
+      footer{
+        position: absolute; 
+        bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        width: 95%;
+        padding: 4px;
+        align-items: center;
+      }
+
+      .links{
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        align-items: center;
+        justify-content: center;
+      }
+      .link-list{
+        display: flex;
+        flex-direction: column;
+        list-style-type: none;
+      }
+      .maker{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 12px;
+      }
+      a{
+        text-decoration: underline;
+        color: white;
+
+      }
+
+      @media (min-width: 640px) {
+        .body {
+          flex-direction: row;
+        }
+        .editor {
+          width: 55%;
+          height: 100%;
+        }
+        footer{
+          width: 98%;
+        }
+        .maker{
+          flex-direction: row;
+          gap: 4px;
+        }
+        .link-list{
+          gap: 12px;
+          flex-direction: row;
+        }
+      }

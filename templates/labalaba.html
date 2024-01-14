@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Web App</title>
+    <!-- Include CodeMirror CSS and JS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.js"></script>
+    <!-- Include Python mode for CodeMirror -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/python/python.js"></script>
+    <style>
+      body {
+        background-color: black;
+        color: white;
+        font-family: sans-serif;
+      }
+
+      .body {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        min-height: 100%;
+      }
+
+      .editor {
+        width: 100%;
+        min-height: screen;
+        height: 80%;
+      }
+
+      .button {
+        width: 100%;
+        padding: 8px;
+        margin: 8px 0 8px 0;
+        background: #424242;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .button:hover {
+        background-color: gray;
+      }
+
+      @media (min-width: 640px) {
+        .body {
+          flex-direction: row;
+        }
+        .editor {
+          width: 60%;
+          height: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <h1>Bhailang</h1>
+    </div>
+    <div class="body">
+      <div class="editor">
+        <button onclick="runCode()" class="button">Run</button>
+        <textarea
+          id="code"
+          name="code"
+          rows="20"
+          cols="50"
+          placeholder="Enter your Python code here"
+        ></textarea>
+      </div>
+      <div>
+        <h2>Output:</h2>
+        <div id="console"></div>
+      </div>
+    </div>
+
+    <script>
+      // Initialize CodeMirror
+      var codeEditor = CodeMirror.fromTextArea(
+        document.getElementById("code"),
+        {
+          mode: "python",
+          theme: "default",
+          lineNumbers: true,
+        }
+      );
+
+      // Function to run the code
+      function runCode() {
+        var code = codeEditor.getValue();
+        var consoleOutput = document.getElementById("console");
+
+        // Make a POST request to run the script
+        fetch("/run_script", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: "code=" + encodeURIComponent(code),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              consoleOutput.innerHTML = "<pre>" + data.result + "</pre>";
+            } else {
+              consoleOutput.innerHTML = "<pre>Error: " + data.error + "</pre>";
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Web App</title>
+    <link rel="stylesheet" href="/static/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.min.css"
+    />
+    <link rel="stylesheet" href="https://codemirror.net/theme/dracula.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.js"></script>
+    <!-- Include Python mode for CodeMirror -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/python/python.js"></script>
+  </head>
+
+  <body>
+    <div>
+      <h1>Bhailang Nepali</h1>
+    </div>
+    <div class="body">
+      <div class="editor">
+        <div class="button-batta">
+          <button onclick="runCode()" class="button">Run</button>
+          <button onclick="refreshPage()" class="button">Clear</button>
+        </div>
+        <textarea
+          id="code"
+          name="code"
+          rows="20"
+          cols="50"
+          placeholder="Enter your Python code here"
+        ></textarea>
+      </div>
+      <div>
+        <h2>Output:</h2>
+        <div id="console"></div>
+      </div>
+    </div>
+
+    <script>
+      // Initialize CodeMirror
+      var codeEditor = CodeMirror.fromTextArea(
+        document.getElementById("code"),
+        {
+          lineNumbers: true,
+          mode: "python",
+          theme: "default",
+        }
+      );
+
+      // Reload the page
+      function refreshPage() {
+        location.reload(true);
+      }
+
+      // Function to run the code
+      function runCode() {
+        var code = codeEditor.getValue();
+        var consoleOutput = document.getElementById("console");
+
+        // Make a POST request to run the script
+        fetch("/run_script", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: "code=" + encodeURIComponent(code),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              consoleOutput.innerHTML = "<pre>>>>   " + data.result + "</pre>";
+            } else {
+              consoleOutput.innerHTML =
+                "<pre>>>>   Error: " + data.error + "</pre>";
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
+  <footer>
+    <div class="maker">
+      Made with ❤ by
+      <a href="https://kaushalrijal.com.np" target="none">Kaushal Rijal</a>
+    </div>
+    <div class="links">
+      <ul class="link-list">
+        <li>
+          <a
+            href="https://github.com/kaushalrijal/BhaiLang-Nepali"
+            target="none"
+          >
+            View Source
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/kaushalrijal/BhaiLang-Nepali/#readme"
+            target="none"
+          >
+            Documentation
+          </a>
+        </li>
+      </ul>
+    </div>
+  </footer>
+</html>
